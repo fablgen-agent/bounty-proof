@@ -13,7 +13,7 @@
     .eyebrow { color:var(--green); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78rem; }
     h1 { font-size:clamp(2.6rem,8vw,5.5rem); line-height:.95; margin:.35em 0 .25em; max-width:850px; }
     .lead { color:var(--muted); font-size:1.2rem; max-width:700px; }
-    .actions { display:flex; gap:12px; flex-wrap:wrap; margin:32px 0 64px; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin:32px 0 48px; }
     a.button { color:#07120d; background:var(--green); text-decoration:none; font-weight:800; padding:12px 18px; border-radius:10px; }
     a.secondary { color:var(--text); background:transparent; border:1px solid var(--line); }
     .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
@@ -21,8 +21,22 @@
     .card h2 { margin-top:0; }
     code { color:var(--green); }
     .price { font-size:2rem; font-weight:850; }
+    .demo { margin:0 0 56px; padding:28px; background:var(--panel); border:1px solid var(--line); border-radius:18px; }
+    .demo h2 { margin-top:0; }
+    form { display:grid; grid-template-columns:minmax(0,1fr) 150px auto; gap:10px; }
+    label { display:grid; gap:6px; color:var(--muted); font-size:.85rem; }
+    input, button { width:100%; border:1px solid var(--line); border-radius:10px; padding:12px; font:inherit; }
+    input { background:#090d15; color:var(--text); }
+    button { align-self:end; background:var(--green); color:#07120d; font-weight:800; cursor:pointer; }
+    button:disabled { opacity:.65; cursor:wait; }
+    .privacy, .facts { color:var(--muted); font-size:.85rem; }
+    .result { margin-top:18px; border-left:4px solid var(--green); background:#0b111a; border-radius:8px; padding:18px; }
+    .result.skip, .result.error { border-color:#ff6b7a; }
+    .result.watch { border-color:#ffd166; }
+    .result h3 { margin:0; font-size:1.5rem; }
+    .result-title { font-weight:700; }
     footer { color:var(--muted); margin-top:64px; border-top:1px solid var(--line); padding-top:24px; }
-    @media (max-width:760px) { main { padding-top:48px; } .grid { grid-template-columns:1fr; } }
+    @media (max-width:760px) { main { padding-top:48px; } .grid, form { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -34,6 +48,20 @@
     <a class="button" href="https://github.com/fablgen-agent/bounty-proof">Use the free CLI</a>
     <a class="button secondary" href="https://github.com/fablgen-agent/bounty-proof/issues/new?template=early-access.yml">Get paid alerts — £9/month</a>
   </div>
+  <section class="demo" aria-labelledby="demo-title">
+    <h2 id="demo-title">Try the live preflight</h2>
+    <form id="preflight-form">
+      <label>GitHub issue URL
+        <input name="issue-url" type="url" required value="https://github.com/typeorm/typeorm/issues/12578" autocomplete="url">
+      </label>
+      <label>Verified reward (USD)
+        <input name="reward" type="number" min="0" step="0.01" value="300">
+      </label>
+      <button type="submit">Run live preflight</button>
+    </form>
+    <p class="privacy">Your browser queries GitHub directly. No issue URL or personal data is sent to us. Anonymous GitHub API limits apply.</p>
+    <div id="result" aria-live="polite" hidden></div>
+  </section>
   <section class="grid" aria-label="Product options">
     <article class="card"><h2>Preflight</h2><p>One issue URL in. A transparent <code>WORK</code>, <code>WATCH</code>, or <code>SKIP</code> verdict out.</p></article>
     <article class="card"><h2>Freshness</h2><p>Live GitHub state catches closed issues, assigned work, open solutions, bot swarms, and dormant repositories.</p></article>
@@ -41,5 +69,6 @@
   </section>
   <footer>No payout guarantees. No security bounties. No fabricated earnings. Operated with human oversight.</footer>
 </main>
+<script type="module" src="./app.js"></script>
 </body>
 </html>
