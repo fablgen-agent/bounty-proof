@@ -62,6 +62,11 @@ class AssessmentTests(unittest.TestCase):
         self.assertTrue(has_submission_block("Open bounty", [("MEMBER", message)]))
         self.assertFalse(has_submission_block("Open bounty", [("CONTRIBUTOR", message)]))
 
+    def test_issue_author_can_put_bounty_on_halt(self):
+        message = "This is on halt until we have some public testing."
+        self.assertTrue(has_submission_block("Open bounty", [("ISSUE_AUTHOR", message)]))
+        self.assertFalse(has_submission_block("Open bounty", [("NONE", message)]))
+
     def test_competing_pr_and_attempts_are_skip(self):
         result = assess(
             evidence(open_prs=("https://github.com/example/project/pull/2",), attempts=4),

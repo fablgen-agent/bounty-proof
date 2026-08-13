@@ -1,14 +1,16 @@
 export const attemptPattern = /^\s*\/(?:opire\s+)?try(?:\s|$)|^\s*\/attempt(?:\s|$)/gim;
 export const securityPattern = /\b(?:security|vulnerability|exploit|penetration[ -]?test|red[ -]?team|audit)\b/i;
-export const submissionBlockPattern = /\b(?:(?:please\s+)?refrain\s+from\s+submitting\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|(?:please\s+)?do\s+not\s+submit\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?|contributions?)|(?:bounty|submissions?)\s+(?:is|are)\s+(?:paused|closed|on\s+hold))\b/i;
-export const maintainerAssociations = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
+export const submissionBlockPattern = /\b(?:(?:please\s+)?refrain\s+from\s+submitting\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|(?:please\s+)?do\s+not\s+submit\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?|contributions?)|(?:this|bounty|submissions?|work\s+on\s+this\s+bounty)\s+(?:is|are)\s+(?:paused|closed|on\s+(?:hold|halt)))\b/i;
+export const maintainerAssociations = new Set(["OWNER", "MEMBER", "COLLABORATOR", "ISSUE_AUTHOR"]);
 
-export function hasSubmissionBlock(issueText, comments) {
+export function hasSubmissionBlock(issueText, comments, issueAuthor = "") {
   if (submissionBlockPattern.test(issueText)) return true;
-  return comments.some((comment) =>
-    maintainerAssociations.has((comment.author_association || "").toUpperCase())
-      && submissionBlockPattern.test(comment.body || ""),
-  );
+  return comments.some((comment) => {
+    const association = comment.user?.login === issueAuthor
+      ? "ISSUE_AUTHOR"
+      : (comment.author_association || "").toUpperCase();
+    return maintainerAssociations.has(association) && submissionBlockPattern.test(comment.body || "");
+  });
 }
 
 export function parseIssueUrl(value) {

@@ -29,7 +29,7 @@ class GitHubClient:
         headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "bounty-proof/0.2.2",
+            "User-Agent": "bounty-proof/0.2.3",
         }
         if self.token:
             headers["Authorization"] = f"Bearer {self.token}"
@@ -84,7 +84,10 @@ class GitHubClient:
                 title_and_body,
                 [
                     (
-                        comment.get("author_association") or "",
+                        "ISSUE_AUTHOR"
+                        if comment.get("user", {}).get("login")
+                        == issue.get("user", {}).get("login")
+                        else comment.get("author_association") or "",
                         comment.get("body") or "",
                     )
                     for comment in comments

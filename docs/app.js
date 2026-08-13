@@ -66,7 +66,11 @@ form.addEventListener("submit", async (event) => {
       repoPushedAt: repo.pushed_at,
       rewardUsd: rewardValue === "" ? null : Number(rewardValue),
       securityRelated: securityPattern.test(`${issue.title || ""}\n${issue.body || ""}`),
-      submissionsBlocked: hasSubmissionBlock(`${issue.title || ""}\n${issue.body || ""}`, comments),
+      submissionsBlocked: hasSubmissionBlock(
+        `${issue.title || ""}\n${issue.body || ""}`,
+        comments,
+        issue.user?.login || "",
+      ),
     };
     render(scoreEvidence(evidence), evidence);
   } catch (error) {

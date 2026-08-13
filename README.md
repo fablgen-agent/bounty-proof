@@ -8,7 +8,7 @@ Stop coding against closed, assigned, or already-solved bounty issues.
 - current assignees;
 - related open pull requests;
 - public `/try`, `/opire try`, and `/attempt` competition;
-- explicit submission pauses or refusals in the issue or authoritative maintainer comments;
+- explicit submission pauses or refusals in the issue, its author's comments, or maintainer comments;
 - repository age, activity, stars, and archive state;
 - a transparent `WORK`, `WATCH`, or `SKIP` verdict;
 - a hard exclusion for security-related work.

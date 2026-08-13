@@ -16,10 +16,12 @@ SUBMISSION_BLOCK_PATTERN = re.compile(
     r"(?:please\s+)?refrain\s+from\s+submitting\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|"
     r"(?:please\s+)?do\s+not\s+submit\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|"
     r"(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?|contributions?)|"
-    r"(?:bounty|submissions?)\s+(?:is|are)\s+(?:paused|closed|on\s+hold)"
+    r"(?:this|bounty|submissions?|work\s+on\s+this\s+bounty)\s+(?:is|are)\s+(?:paused|closed|on\s+(?:hold|halt))"
     r")\b"
 )
-MAINTAINER_ASSOCIATIONS = frozenset({"OWNER", "MEMBER", "COLLABORATOR"})
+MAINTAINER_ASSOCIATIONS = frozenset(
+    {"OWNER", "MEMBER", "COLLABORATOR", "ISSUE_AUTHOR"}
+)
 
 
 @dataclasses.dataclass(frozen=True)

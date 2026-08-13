@@ -47,3 +47,10 @@ test("only authoritative comments can pause submissions", () => {
   assert.equal(hasSubmissionBlock("Open bounty", [{ author_association: "MEMBER", body }]), true);
   assert.equal(hasSubmissionBlock("Open bounty", [{ author_association: "CONTRIBUTOR", body }]), false);
 });
+
+test("issue author can put their bounty on halt", () => {
+  const body = "This is on halt until we have some public testing.";
+  const comments = [{ author_association: "NONE", user: { login: "sponsor" }, body }];
+  assert.equal(hasSubmissionBlock("Open bounty", comments, "sponsor"), true);
+  assert.equal(hasSubmissionBlock("Open bounty", comments, "someone-else"), false);
+});
