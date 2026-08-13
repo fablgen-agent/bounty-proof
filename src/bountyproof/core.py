@@ -15,10 +15,11 @@ SUBMISSION_BLOCK_PATTERN = re.compile(
     r"(?i)\b(?:"
     r"(?:please\s+)?refrain\s+from\s+submitting\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|"
     r"(?:please\s+)?do\s+not\s+submit\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|"
-    r"(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?)|"
+    r"(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?|contributions?)|"
     r"(?:bounty|submissions?)\s+(?:is|are)\s+(?:paused|closed|on\s+hold)"
     r")\b"
 )
+MAINTAINER_ASSOCIATIONS = frozenset({"OWNER", "MEMBER", "COLLABORATOR"})
 
 
 @dataclasses.dataclass(frozen=True)
@@ -56,6 +57,18 @@ def count_attempts(comments: list[str]) -> int:
     return sum(len(ATTEMPT_PATTERN.findall(comment)) for comment in comments)
 
 
+def has_submission_block(
+    issue_text: str, comments: list[tuple[str, str]]
+) -> bool:
+    if SUBMISSION_BLOCK_PATTERN.search(issue_text):
+        return True
+    return any(
+        association.upper() in MAINTAINER_ASSOCIATIONS
+        and bool(SUBMISSION_BLOCK_PATTERN.search(body))
+        for association, body in comments
+    )
+
+
 def assess(evidence: Evidence, now: dt.datetime | None = None) -> Assessment:
     now = now or dt.datetime.now(dt.timezone.utc)
     score = 100
@@ -69,7 +82,7 @@ def assess(evidence: Evidence, now: dt.datetime | None = None) -> Assessment:
         return Assessment("SKIP", 0, ("repository is archived",))
     if evidence.submissions_blocked:
         return Assessment(
-            "SKIP", 0, ("maintainer issue text pauses or rejects new submissions",)
+            "SKIP", 0, ("maintainer text pauses or rejects new submissions",)
         )
 
     if evidence.assignees:

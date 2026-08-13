@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { countAttempts, findRelatedPullRequests, parseIssueUrl, scoreEvidence, submissionBlockPattern } from "../docs/engine.js";
+import { countAttempts, findRelatedPullRequests, hasSubmissionBlock, parseIssueUrl, scoreEvidence, submissionBlockPattern } from "../docs/engine.js";
 
 const now = new Date("2026-08-13T00:00:00Z");
 const clean = {
@@ -39,4 +39,11 @@ test("rejects an explicit maintainer pause on new submissions", () => {
   assert.equal(submissionBlockPattern.test(text), true);
   assert.equal(submissionBlockPattern.test("Review existing PRs before submitting."), false);
   assert.equal(scoreEvidence({ ...clean, submissionsBlocked: true }, now).verdict, "SKIP");
+});
+
+test("only authoritative comments can pause submissions", () => {
+  const body = "I'm not accepting any contributions from new contributors for this feature.";
+  assert.equal(hasSubmissionBlock("Open bounty", [{ author_association: "OWNER", body }]), true);
+  assert.equal(hasSubmissionBlock("Open bounty", [{ author_association: "MEMBER", body }]), true);
+  assert.equal(hasSubmissionBlock("Open bounty", [{ author_association: "CONTRIBUTOR", body }]), false);
 });

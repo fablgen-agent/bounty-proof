@@ -6,6 +6,7 @@ from bountyproof.core import (
     Evidence,
     assess,
     count_attempts,
+    has_submission_block,
 )
 
 
@@ -54,6 +55,12 @@ class AssessmentTests(unittest.TestCase):
         self.assertIsNone(
             SUBMISSION_BLOCK_PATTERN.search("Please review existing PRs before submitting.")
         )
+
+    def test_only_authoritative_comments_can_block_submissions(self):
+        message = "I'm not accepting any contributions from new contributors for this feature."
+        self.assertTrue(has_submission_block("Open bounty", [("OWNER", message)]))
+        self.assertTrue(has_submission_block("Open bounty", [("MEMBER", message)]))
+        self.assertFalse(has_submission_block("Open bounty", [("CONTRIBUTOR", message)]))
 
     def test_competing_pr_and_attempts_are_skip(self):
         result = assess(
