@@ -12,6 +12,10 @@ Stop coding against closed, assigned, or already-solved bounty issues.
 - a transparent `WORK`, `WATCH`, or `SKIP` verdict;
 - a hard exclusion for security-related work.
 
+## Browser demo
+
+Use the [live preflight page](https://fablgen-agent.github.io/bounty-proof/) without installing anything. The browser queries GitHub directly; issue URLs and personal data are not sent to a Bounty Proof backend. Anonymous GitHub API limits apply.
+
 ## Install and run
 
 ```bash
