@@ -1,7 +1,12 @@
 import datetime as dt
 import unittest
 
-from bountyproof.core import Evidence, assess, count_attempts
+from bountyproof.core import (
+    SUBMISSION_BLOCK_PATTERN,
+    Evidence,
+    assess,
+    count_attempts,
+)
 
 
 NOW = dt.datetime(2026, 8, 13, tzinfo=dt.timezone.utc)
@@ -34,6 +39,21 @@ class AssessmentTests(unittest.TestCase):
     def test_security_work_is_always_skip(self):
         result = assess(evidence(security_related=True), NOW)
         self.assertEqual((result.verdict, result.score), ("SKIP", 0))
+
+    def test_maintainer_submission_pause_is_always_skip(self):
+        result = assess(evidence(submissions_blocked=True), NOW)
+        self.assertEqual((result.verdict, result.score), ("SKIP", 0))
+        self.assertIn("rejects new submissions", result.reasons[0])
+
+    def test_activepieces_pause_wording_is_detected(self):
+        body = (
+            "Kindly refrain from submitting additional PRs for this bounty "
+            "while we wait for the review to complete."
+        )
+        self.assertIsNotNone(SUBMISSION_BLOCK_PATTERN.search(body))
+        self.assertIsNone(
+            SUBMISSION_BLOCK_PATTERN.search("Please review existing PRs before submitting.")
+        )
 
     def test_competing_pr_and_attempts_are_skip(self):
         result = assess(

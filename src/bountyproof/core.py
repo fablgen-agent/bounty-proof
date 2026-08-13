@@ -11,6 +11,14 @@ ATTEMPT_PATTERN = re.compile(
 SECURITY_PATTERN = re.compile(
     r"(?i)\b(?:security|vulnerability|exploit|penetration[ -]?test|red[ -]?team|audit)\b"
 )
+SUBMISSION_BLOCK_PATTERN = re.compile(
+    r"(?i)\b(?:"
+    r"(?:please\s+)?refrain\s+from\s+submitting\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|"
+    r"(?:please\s+)?do\s+not\s+submit\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|"
+    r"(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?)|"
+    r"(?:bounty|submissions?)\s+(?:is|are)\s+(?:paused|closed|on\s+hold)"
+    r")\b"
+)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -28,6 +36,7 @@ class Evidence:
     reward_usd: float | None = None
     source: str | None = None
     security_related: bool = False
+    submissions_blocked: bool = False
 
 
 @dataclasses.dataclass(frozen=True)
@@ -58,6 +67,10 @@ def assess(evidence: Evidence, now: dt.datetime | None = None) -> Assessment:
         return Assessment("SKIP", 0, (f"issue is {evidence.issue_state}",))
     if evidence.repo_archived:
         return Assessment("SKIP", 0, ("repository is archived",))
+    if evidence.submissions_blocked:
+        return Assessment(
+            "SKIP", 0, ("maintainer issue text pauses or rejects new submissions",)
+        )
 
     if evidence.assignees:
         score -= 45

@@ -1,5 +1,6 @@
 export const attemptPattern = /^\s*\/(?:opire\s+)?try(?:\s|$)|^\s*\/attempt(?:\s|$)/gim;
 export const securityPattern = /\b(?:security|vulnerability|exploit|penetration[ -]?test|red[ -]?team|audit)\b/i;
+export const submissionBlockPattern = /\b(?:(?:please\s+)?refrain\s+from\s+submitting\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|(?:please\s+)?do\s+not\s+submit\s+(?:any\s+)?(?:additional|new)\s+(?:pull requests?|prs?|submissions?)|(?:not|no\s+longer)\s+accepting\s+(?:any\s+)?(?:new\s+)?(?:pull requests?|prs?|submissions?)|(?:bounty|submissions?)\s+(?:is|are)\s+(?:paused|closed|on\s+hold))\b/i;
 
 export function parseIssueUrl(value) {
   const match = value.trim().match(/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/issues\/(\d+)\/?$/);
@@ -30,6 +31,7 @@ export function scoreEvidence(evidence, now = new Date()) {
   if (evidence.securityRelated) return { verdict: "SKIP", score: 0, reasons: ["Security-related work is out of scope."] };
   if (evidence.issueState !== "open") return { verdict: "SKIP", score: 0, reasons: [`Issue is ${evidence.issueState}.`] };
   if (evidence.repoArchived) return { verdict: "SKIP", score: 0, reasons: ["Repository is archived."] };
+  if (evidence.submissionsBlocked) return { verdict: "SKIP", score: 0, reasons: ["Maintainer issue text pauses or rejects new submissions."] };
 
   let score = 100;
   const reasons = [];

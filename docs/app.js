@@ -1,4 +1,4 @@
-import { countAttempts, findRelatedPullRequests, parseIssueUrl, scoreEvidence, securityPattern } from "./engine.js";
+import { countAttempts, findRelatedPullRequests, parseIssueUrl, scoreEvidence, securityPattern, submissionBlockPattern } from "./engine.js";
 
 const form = document.querySelector("#preflight-form");
 const button = form.querySelector("button");
@@ -66,6 +66,7 @@ form.addEventListener("submit", async (event) => {
       repoPushedAt: repo.pushed_at,
       rewardUsd: rewardValue === "" ? null : Number(rewardValue),
       securityRelated: securityPattern.test(`${issue.title || ""}\n${issue.body || ""}`),
+      submissionsBlocked: submissionBlockPattern.test(`${issue.title || ""}\n${issue.body || ""}`),
     };
     render(scoreEvidence(evidence), evidence);
   } catch (error) {

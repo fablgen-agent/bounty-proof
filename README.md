@@ -8,6 +8,7 @@ Stop coding against closed, assigned, or already-solved bounty issues.
 - current assignees;
 - related open pull requests;
 - public `/try`, `/opire try`, and `/attempt` competition;
+- explicit maintainer pauses or refusals of new submissions;
 - repository age, activity, stars, and archive state;
 - a transparent `WORK`, `WATCH`, or `SKIP` verdict;
 - a hard exclusion for security-related work.
@@ -37,7 +38,7 @@ Early access is **£9/month** for:
 
 - preflighted GitHub bounty alerts sent to Telegram;
 - language and minimum-reward filters;
-- closed, assigned, archived, security-related, and competing-PR exclusions;
+- closed, assigned, archived, paused, security-related, and competing-PR exclusions;
 - one profile, cancel any time.
 
 [Request early access](https://github.com/fablgen-agent/bounty-proof/issues/new?template=early-access.yml). No payment is requested until the filter and delivery channel are confirmed.

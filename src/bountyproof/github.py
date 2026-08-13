@@ -6,7 +6,12 @@ import re
 import urllib.parse
 import urllib.request
 
-from .core import Evidence, SECURITY_PATTERN, count_attempts
+from .core import (
+    Evidence,
+    SECURITY_PATTERN,
+    SUBMISSION_BLOCK_PATTERN,
+    count_attempts,
+)
 
 
 ISSUE_URL = re.compile(r"https://github\.com/([^/]+)/([^/]+)/issues/(\d+)/?")
@@ -24,7 +29,7 @@ class GitHubClient:
         headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28",
-            "User-Agent": "bounty-proof/0.1",
+            "User-Agent": "bounty-proof/0.2.1",
         }
         if self.token:
             headers["Authorization"] = f"Bearer {self.token}"
@@ -75,4 +80,5 @@ class GitHubClient:
             reward_usd=reward_usd,
             source=source,
             security_related=bool(SECURITY_PATTERN.search(title_and_body)),
+            submissions_blocked=bool(SUBMISSION_BLOCK_PATTERN.search(title_and_body)),
         )

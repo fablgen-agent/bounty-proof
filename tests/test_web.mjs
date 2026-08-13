@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { countAttempts, findRelatedPullRequests, parseIssueUrl, scoreEvidence } from "../docs/engine.js";
+import { countAttempts, findRelatedPullRequests, parseIssueUrl, scoreEvidence, submissionBlockPattern } from "../docs/engine.js";
 
 const now = new Date("2026-08-13T00:00:00Z");
 const clean = {
   issueState: "open", assignees: [], openPullRequests: [], attempts: 0,
   repoArchived: false, repoStars: 500, repoCreatedAt: "2020-01-01T00:00:00Z",
   repoPushedAt: "2026-08-12T00:00:00Z", rewardUsd: 100, securityRelated: false,
+  submissionsBlocked: false,
 };
 
 test("parses only GitHub issue URLs", () => {
@@ -31,4 +32,11 @@ test("scores clean work and rejects closed or security work", () => {
   assert.equal(scoreEvidence(clean, now).verdict, "WORK");
   assert.deepEqual(scoreEvidence({ ...clean, issueState: "closed" }, now), { verdict: "SKIP", score: 0, reasons: ["Issue is closed."] });
   assert.equal(scoreEvidence({ ...clean, securityRelated: true }, now).score, 0);
+});
+
+test("rejects an explicit maintainer pause on new submissions", () => {
+  const text = "Kindly refrain from submitting additional PRs for this bounty while review is pending.";
+  assert.equal(submissionBlockPattern.test(text), true);
+  assert.equal(submissionBlockPattern.test("Review existing PRs before submitting."), false);
+  assert.equal(scoreEvidence({ ...clean, submissionsBlocked: true }, now).verdict, "SKIP");
 });
