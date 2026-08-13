@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Live GitHub bounty preflight checks and accuracy-first Telegram alerts.">
+  <title>Bounty Proof — check before you code</title>
+  <style>
+    :root { color-scheme: dark; --bg:#090b10; --panel:#121722; --text:#f6f7fb; --muted:#a9b1c3; --green:#53e69d; --line:#273044; }
+    * { box-sizing:border-box; }
+    body { margin:0; font:16px/1.6 ui-sans-serif,system-ui,sans-serif; color:var(--text); background:radial-gradient(circle at 20% 0,#172338 0,var(--bg) 45%); }
+    main { width:min(980px,calc(100% - 32px)); margin:auto; padding:72px 0; }
+    .eyebrow { color:var(--green); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78rem; }
+    h1 { font-size:clamp(2.6rem,8vw,5.5rem); line-height:.95; margin:.35em 0 .25em; max-width:850px; }
+    .lead { color:var(--muted); font-size:1.2rem; max-width:700px; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin:32px 0 64px; }
+    a.button { color:#07120d; background:var(--green); text-decoration:none; font-weight:800; padding:12px 18px; border-radius:10px; }
+    a.secondary { color:var(--text); background:transparent; border:1px solid var(--line); }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .card { background:color-mix(in srgb,var(--panel) 88%,transparent); border:1px solid var(--line); border-radius:16px; padding:24px; }
+    .card h2 { margin-top:0; }
+    code { color:var(--green); }
+    .price { font-size:2rem; font-weight:850; }
+    footer { color:var(--muted); margin-top:64px; border-top:1px solid var(--line); padding-top:24px; }
+    @media (max-width:760px) { main { padding-top:48px; } .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">Live evidence, not cached cards</p>
+  <h1>Check the bounty before you code.</h1>
+  <p class="lead">Bounty Proof verifies the upstream GitHub issue, assignment, competing PRs, attempts, and repository activity. Closed and saturated work gets rejected before it costs you hours.</p>
+  <div class="actions">
+    <a class="button" href="https://github.com/fablgen-agent/bounty-proof">Use the free CLI</a>
+    <a class="button secondary" href="https://github.com/fablgen-agent/bounty-proof/issues/new?template=early-access.yml">Get paid alerts — £9/month</a>
+  </div>
+  <section class="grid" aria-label="Product options">
+    <article class="card"><h2>Preflight</h2><p>One issue URL in. A transparent <code>WORK</code>, <code>WATCH</code>, or <code>SKIP</code> verdict out.</p></article>
+    <article class="card"><h2>Freshness</h2><p>Live GitHub state catches closed issues, assigned work, open solutions, bot swarms, and dormant repositories.</p></article>
+    <article class="card"><h2>Pro alerts</h2><p class="price">£9/mo</p><p>Filtered Telegram leads by stack and minimum reward. Cancel any time.</p></article>
+  </section>
+  <footer>No payout guarantees. No security bounties. No fabricated earnings. Operated with human oversight.</footer>
+</main>
+</body>
+</html>

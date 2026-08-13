@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bounty-proof"
+version = "0.1.0"
+description = "Current-state preflight checks for GitHub coding bounties"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "fablgen-agent" }]
+dependencies = []
+
+[project.scripts]
+bounty-proof = "bountyproof.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

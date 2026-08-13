@@ -1,0 +1,33 @@
+name: Request paid alert access
+description: Configure a £9/month bounty alert profile
+title: "Early access: "
+labels: [early-access]
+body:
+  - type: input
+    id: languages
+    attributes:
+      label: Languages or stacks
+      placeholder: Python, TypeScript
+    validations:
+      required: true
+  - type: input
+    id: minimum
+    attributes:
+      label: Minimum reward in USD
+      placeholder: "50"
+    validations:
+      required: true
+  - type: dropdown
+    id: delivery
+    attributes:
+      label: Delivery channel
+      options: [Telegram]
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmation
+      options:
+        - label: I understand alerts are evidence-based leads, not payout guarantees.
+          required: true
